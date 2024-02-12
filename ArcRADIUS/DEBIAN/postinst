@@ -1,0 +1,15 @@
+#!/bin/bash
+
+# Disable FreeRADIUS service
+systemctl stop freeradius.service
+systemctl disable freeradius.service
+
+# Enable and start the arc-radius service
+systemctl enable arc-radius.service
+systemctl start arc-radius.service
+
+# Enable and start the arc-radius-web service
+systemctl enable arc-radius-web.service
+systemctl start arc-radius-web.service
+
+exit 0

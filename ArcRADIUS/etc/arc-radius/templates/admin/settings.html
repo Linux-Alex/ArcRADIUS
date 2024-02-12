@@ -1,0 +1,38 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="">
+  <h2>Settings</h2>
+  <form method="post">
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="save_last_package" id="save_last_package" {% if settings.save_last_package %} checked {% endif %}>
+      <label class="form-check-label" for="save_last_package">
+        Save content of last package
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="enable_debug_mode" id="enable_debug_mode" {% if settings.enable_debug_mode %} checked {% endif %}>
+      <label class="form-check-label" for="enable_debug_mode">
+        Enable debug mode
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="check_otp" id="check_otp" {% if settings.check_otp %} checked {% endif %}>
+      <label class="form-check-label" for="check_otp">
+        Check OTP PIN
+      </label>
+    </div>
+    <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="password_and_otp_same_field" id="password_and_otp_same_field" {% if settings.password_and_otp_same_field %} checked {% endif %}>
+      <label class="form-check-label" for="password_and_otp_same_field">
+        Password and OTP PIN in same field
+      </label>
+    </div>
+    <div class="form-group">
+      <label for="otp_pin_field">Set OTP PIN field:</label>
+      <input type="text" class="form-control" id="otp_pin_field" name="otp_pin_field" value="{{ settings.otp_pin_field }}">
+    </div>
+    <button type="submit" class="btn btn-primary">Save</button>
+  </form>
+</div>
+{% endblock %}

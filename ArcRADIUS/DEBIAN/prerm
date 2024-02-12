@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Stop the arc-radius service before removal
+systemctl stop arc-radius.service
+systemctl stop arc-radius-web.service
+
+systemctl disable arc-radius.service
+systemctl disable arc-radius-web.service
+
+rm -rf /etc/arc-radius/__pycache__/
+
+exit 0

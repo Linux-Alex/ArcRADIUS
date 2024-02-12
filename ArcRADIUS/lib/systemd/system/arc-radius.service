@@ -1,0 +1,11 @@
+[Unit]
+Description=ArcRADIUS Server
+After=network.target
+
+[Service]
+WorkingDirectory=/etc/arc-radius
+ExecStart=/usr/share/arc-radius/env/bin/python3 /etc/arc-radius/RADIUS_server.py
+Restart=always
+
+[Install]
+WantedBy=multi-user.target

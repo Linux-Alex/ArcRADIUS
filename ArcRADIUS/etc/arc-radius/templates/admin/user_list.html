@@ -1,0 +1,11 @@
+{% extends 'admin/model/list.html' %}
+{% block body %}
+{{ super() }}
+
+<div>
+    <div class="flex-row flex-wrap" style="gap: 15px;">
+        <a href="{{ url_for('.sample_view') }}" class="btn btn-secondary">Show Sample 1</a>
+    </div>
+</div>
+
+{% endblock %}

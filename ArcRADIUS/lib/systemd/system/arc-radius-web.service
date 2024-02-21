@@ -6,6 +6,7 @@ After=network.target
 WorkingDirectory=/etc/arc-radius
 ExecStart=/usr/share/arc-radius/env/bin/python3 /etc/arc-radius/app.py
 Restart=always
+Environment=PYTHONUNBUFFERED=1
 
 [Install]
 WantedBy=multi-user.target

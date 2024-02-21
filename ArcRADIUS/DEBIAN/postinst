@@ -1,8 +1,11 @@
 #!/bin/bash
 
-# Disable FreeRADIUS service
-systemctl stop freeradius.service
-systemctl disable freeradius.service
+# Check if FreeRADIUS is installed
+if dpkg -s freeradius &> /dev/null; then
+    # Disable FreeRADIUS service
+    systemctl stop freeradius.service
+    systemctl disable freeradius.service
+fi
 
 # Enable and start the arc-radius service
 systemctl enable arc-radius.service

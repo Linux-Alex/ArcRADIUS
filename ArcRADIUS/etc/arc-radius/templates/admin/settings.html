@@ -23,6 +23,12 @@
       </label>
     </div>
     <div class="form-check">
+      <input class="form-check-input" type="checkbox" name="check_password" id="check_password" {% if settings.check_password %} checked {% endif %}>
+      <label class="form-check-label" for="check_password">
+        Check password
+      </label>
+    </div>
+    <div class="form-check">
       <input class="form-check-input" type="checkbox" name="password_and_otp_same_field" id="password_and_otp_same_field" {% if settings.password_and_otp_same_field %} checked {% endif %}>
       <label class="form-check-label" for="password_and_otp_same_field">
         Password and OTP PIN in same field

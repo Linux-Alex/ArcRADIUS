@@ -13,6 +13,7 @@ import netifaces as ni
 import pyotp
 from flask import current_app
 import json
+from helper import createAddressFileIfNotExists, createDbIfNotExists
 
 def read_config():
     try:
@@ -56,16 +57,26 @@ def validate_otp(secret_key, otp_code):
 def get_clients(srv):
     with app.app_context():
         print("Reading clients from file")
-        doc = yaml.load(open(os.path.join(os.path.dirname(__file__), "clients", "address.yml"), 'r').read(), Loader=yaml.FullLoader)
 
-        for entry in doc:
-            if doc[entry]['type_net'] == "subnet":
-                net = ipaddress.IPv4Network(doc[entry]['IP'])
-                numbers = int(str(net[-1]).split(".")[-1]) - int(str(net[0]).split(".")[-1])
-                for i in range(0,numbers+1):
-                    srv.hosts[str(net[i])] = server.RemoteHost(str(net[i]), bytes(doc[entry]['secret'], 'utf-8'), doc[entry]['name'])
-            elif doc[entry]['type_net'] == "ip":
-                srv.hosts[doc[entry]['IP']] = server.RemoteHost(doc[entry]['IP'], bytes(doc[entry]['secret'], 'utf-8'), doc[entry]['name'])
+        # Create if not exists
+        createAddressFileIfNotExists()
+
+        try:
+            doc = yaml.load(open(os.path.join(os.path.dirname(__file__), "clients", "address.yml"), 'r').read(), Loader=yaml.FullLoader)
+
+            for entry in doc:
+                if doc[entry]['type_net'] == "subnet":
+                    net = ipaddress.IPv4Network(doc[entry]['IP'])
+                    numbers = int(str(net[-1]).split(".")[-1]) - int(str(net[0]).split(".")[-1])
+                    for i in range(0,numbers+1):
+                        srv.hosts[str(net[i])] = server.RemoteHost(str(net[i]), bytes(doc[entry]['secret'], 'utf-8'), doc[entry]['name'])
+                elif doc[entry]['type_net'] == "ip":
+                    srv.hosts[doc[entry]['IP']] = server.RemoteHost(doc[entry]['IP'], bytes(doc[entry]['secret'], 'utf-8'), doc[entry]['name'])
+        except Exception as error:
+            print("Error: ", error)
+            logging.error("Error: ", error)
+            logging.error("Invalid clients config. Also empty clients file is not allowed.")
+            exit(1)
 
         hostname = socket.gethostname()
         
@@ -86,16 +97,22 @@ class RADIUSserver(server.Server):
 
     _collection = None
 
-    def checkAccess(self, user, password, otp_code=None):
+    def checkAccess(self, user, password, otp_code=None, check_password=True):
         if isinstance(otp_code, list):
             otp_code = otp_code[0]
+
+        # Create initial database if it doesn't exist
+        createDbIfNotExists()
 
         print("Checking access for user: {0} with password: {1} otp: {2}".format(user, password, otp_code))
         # return empty user
         conn = sqlite3.connect('/etc/arc-radius/instance/db.sqlite3')
         cursor = conn.cursor()
 
-        cursor.execute('SELECT otp_secret FROM user WHERE LOWER(username) = ? AND password = ?', (user.lower(), password))
+        if check_password:
+            cursor.execute('SELECT otp_secret FROM user WHERE LOWER(username) = ? AND password = ?', (user.lower(), password))
+        else:
+            cursor.execute('SELECT otp_secret FROM user WHERE LOWER(username) = ?', (user.lower(),))
         user = cursor.fetchone()
         conn.close()
 
@@ -136,7 +153,10 @@ class RADIUSserver(server.Server):
 
                     # print also password decrypted
                     if attr == "User-Password":
-                        f.write("User-Password decrypted: " + pkt.PwDecrypt(pkt[attr][0]) + "\n")
+                        try:
+                            f.write("User-Password decrypted: " + pkt.PwDecrypt(pkt[attr][0]) + "\n")
+                        except Exception as error:
+                            f.write("User-Password decrypted: " + str(error) + "\n")
 
 
         reply = self.CreateReplyPacket(pkt)
@@ -162,7 +182,10 @@ class RADIUSserver(server.Server):
                         else:
                             otp_code = pkt[otp_pin_field][0]
 
-                if self.checkAccess(user=pkt['User-Name'][0], password=pwd, otp_code=otp_code):
+                # check if password is needed
+                check_password = config.get('check_password', False)
+
+                if self.checkAccess(user=pkt['User-Name'][0], password=pwd, otp_code=otp_code, check_password=check_password):
                     logging.info(msg="Correct access from {0} with user {1}".format(pkt['NAS-IP-Address'][0], pkt['User-Name'][0]))
                     reply.code = packet.AccessAccept
                 else:

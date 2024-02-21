@@ -33,11 +33,11 @@ sudo systemctl disable freeradius.service
 
 2. Install ArcRADIUS: Download the [latest release](https://github.com/Linux-Alex/ArcRADIUS/releases/tag/production) from the Releases page and follow the installation instructions provided.
 
-3. Open the Web Admin Panle of ArcRADIUS on link: [http://localhost:4048](http://localhost:4048)
+3. Open the Web Admin Panle of ArcRADIUS on link: [https://localhost:4048](https://localhost:4048)
 
 4. Click on the **Login** button in the top right corner and use the default credentials (username: `admin`, password: `admin`).
 
-5. Configure Client Address: Configure the client address in the **Edit Address** tab of the ArcRADIUS admin panel.
+5. Configure Client Address: Configure the client address in the **RADIUS Clients** tab of the ArcRADIUS admin panel.
 
 6. Restart ArcRADIUS: Restart the ArcRADIUS service to apply the changes:
 
@@ -45,6 +45,6 @@ sudo systemctl disable freeradius.service
 sudo systemctl restart arc-radius.service
 ```
 
-7. Create User Account: Create a user account for the RADIUS client in the **User** tab of the ArcRADIUS admin panel.
+7. Create User Account: Create a user account for the RADIUS client in the **Accounts** and then **User Accounts** tab of the ArcRADIUS admin panel.
 
 8. Generate OTP QR Code: Generate the user's OTP QR code by clicking the **Show QR code** button.

@@ -3,6 +3,7 @@
     "enable_debug_mode": true,
     "password_and_otp_same_field": false,
     "otp_pin_field": "EAP-Message",
-    "check_otp": true
+    "check_otp": true,
+    "check_password": true
   }
   

@@ -1,0 +1,32 @@
+<!-- templates/admin/model/sample_view.html -->
+{% extends 'admin/master.html' %}
+{% block body %}
+<h2>Sample Content</h2>
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Username</th>
+                <th>Password</th>
+                <th>OTP Secret</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for row in sample_data %}
+            <tr>
+                <td>{{ row[1] }}</td>
+                <td>{{ row[2] }}</td>
+                <td>{{ row[3] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<div class="flex-row flex-wrap" style="gap: 15px;">
+    <form action="{{ url_for('user.import_sample') }}" method="post">
+        <button type="submit" class="btn btn-primary">Import data into current DB</button>
+    </form>
+</div>
+
+{% endblock %}

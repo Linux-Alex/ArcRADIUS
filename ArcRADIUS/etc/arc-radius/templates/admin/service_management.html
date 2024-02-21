@@ -1,0 +1,30 @@
+{% extends 'admin/master.html' %}
+
+{% block body %}
+<div class="">
+    <h1>Service status</h1>
+    <pre>{{ service_status }}</pre>
+    <div class="row flex-row flex-wrap" style="gap: 15px;">
+        <div class="col-xs-12 col-md-3 py-3" style="margin-bottom: 5px;">
+            <form action="{{ url_for('service_management.restart_service') }}" method="post">
+                <button type="submit" class="btn btn-info btn-block">Restart service</button>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-3 py-3" style="margin-bottom: 5px;">
+            <form action="{{ url_for('service_management.start_service') }}" method="post">
+                <button type="submit" class="btn btn-success btn-block">Start service</button>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-3 py-3" style="margin-bottom: 5px;">
+            <form action="{{ url_for('service_management.stop_service') }}" method="post">
+                <button type="submit" class="btn btn-warning btn-block">Stop service</button>
+            </form>
+        </div>
+        <div class="col-xs-12 col-md-3 py-3" style="margin-bottom: 5px;">
+            <form action="{{ url_for('service_management.refresh_status') }}" method="post">
+                <button type="submit" class="btn btn-primary btn-block">Refresh status</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

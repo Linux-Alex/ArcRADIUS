@@ -1,0 +1,17 @@
+client1:
+  type_net: subnet
+  IP: 192.168.1.0/24
+  name: private_home
+  secret: password
+
+client2:
+  type_net: ip
+  IP: 192.168.2.32
+  name: TV IP
+  secret: password
+  
+client3:
+  type_net: ip
+  IP: 127.0.0.1
+  name: private_localhost
+  secret: password

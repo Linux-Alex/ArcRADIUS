@@ -27,11 +27,8 @@ sudo systemctl stop freeradius.service
 sudo systemctl disable freeradius.service</pre>
             <p><strong>Follow these steps to configure ArcRADIUS:</strong></p>
             <ol>
-                <li>Configure Client Address in the <b>Edit Address</b> tab. The instructions for adding a new client are available on that page.</li>
-                <li>Restart ArcRADIUS with the command:
-                    <pre>sudo systemctl restart arc-radius.service</pre>
-                </li>
-                <li>Make a user account for the RADIUS client in the <b>User</b> tab.</li>
+                <li>Configure Client Address in the <b>RADIUS Clients</b> tab. The instructions for adding a new client are available on that page. Make sure to save the changes. <br /><i>An empty clients configuration isn't allowed and the main service will shut down.</i></li>
+                <li>Make a user account for the RADIUS client in the <b>Accounts</b> and then <b>User Accoutns</b> tab.</li>
                 <li>You can get the user's OTP QR code by clicking the <b>Show QR code</b> button.</li>
             </ol>
         </div>

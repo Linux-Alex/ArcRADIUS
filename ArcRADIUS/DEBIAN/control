@@ -1,5 +1,5 @@
 Package: arc-radius
-Version: 1.0
+Version: 1.1
 Architecture: all
 Maintainer: Aleks Marinič <alex.marinic22@gmail.com>
 Description: ArcRADIUS is a radius provider service to authenticate users

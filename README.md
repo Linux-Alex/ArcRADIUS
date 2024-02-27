@@ -1,5 +1,7 @@
 # ArcRADIUS
 
+![ArcRADIUS Logo](./assets/Logo.png)
+
 ArcRADIUS is a RADIUS provider service designed to authenticate users and provide secure access control.
 
 ## Features
